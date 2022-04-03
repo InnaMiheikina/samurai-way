@@ -1,16 +1,21 @@
 import React from "react";
 import  s from "./Profile.module.css";
 import MyPosts from  "./MyPosts/MyPosts"
+import ProfileInfo from "./ProfileInfo/ProfileInfo";
+import {ActionType, PostsType} from "../Redax/state";
 
-function Profile(){
-    return  <div className={s.content} >
-        <div>
-            <img src=" https://img1.akspic.ru/previews/1/3/0/5/4/145031/145031-glaz-krug-rozovyj-resnichka-graficeskij_dizajn-500x.jpg" />
-        </div>
-        <div>
-            ava+description
-        </div>
-        <MyPosts />
+type ProfilePropsType = {
+    posts: Array<PostsType>
+   /* addPost:(newPostText:string) => void
+    updateNewPostText:(newText:string) => void*/
+    newPostText:string
+    dispatch: (action:ActionType) => void
+}
+
+function Profile(props: ProfilePropsType){
+    return  <div>
+        <ProfileInfo/>
+        <MyPosts  newPostText = {props.newPostText} posts={props.posts} dispatch = {props. dispatch} />
     </div>
 }
 export default Profile;

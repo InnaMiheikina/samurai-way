@@ -2,6 +2,11 @@
     grid-area: n;
     background-color: darkslateblue;
 }
-.item {
+.item a {
     color: white;
+    text-decoration: none;
+}
+
+.item a.active {
+    color: #add4e6;
 }

@@ -1,22 +1,26 @@
 import React from 'react';
 import './index.css';
-import store, {RootStateType, StoreType} from "./components/Redax/state";
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
+import store, {RootStateType} from "./components/Redux/redux-store";
+import {Store} from "redux";
+import {Provider} from "react-redux";
 
 
 
 
-export const  rerenderEntireTree =(props: RootStateType)=> {
+export const  rerenderEntireTree = (store: Store<RootStateType>)=> {
     ReactDOM.render(
         <BrowserRouter>
-            <App store = {store}/>
+            <Provider store={store}>
+            <App />
+            </Provider>
         </BrowserRouter>,
         document.getElementById('root'));
 }
 
-rerenderEntireTree(store.getState());
-//@ts-ignore
-store.subscribe(rerenderEntireTree);
+rerenderEntireTree(store);
+
+store.subscribe(() => rerenderEntireTree(store));

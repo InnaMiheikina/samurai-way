@@ -1,21 +1,21 @@
 import React from "react";
-import  s from "./Profile.module.css";
-import MyPosts from  "./MyPosts/MyPosts"
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {ActionType, PostsType} from "../Redax/state";
+import MyPostsContainer from "./MyPosts/MyPostsConteiner";
 
+
+/*
 type ProfilePropsType = {
     posts: Array<PostsType>
-   /* addPost:(newPostText:string) => void
-    updateNewPostText:(newText:string) => void*/
     newPostText:string
-    dispatch: (action:ActionType) => void
+    dispatch: Dispatch
+    store:Store<RootStoreType>
 }
+*/
 
-function Profile(props: ProfilePropsType){
+function Profile(){
     return  <div>
         <ProfileInfo/>
-        <MyPosts  newPostText = {props.newPostText} posts={props.posts} dispatch = {props. dispatch} />
+        <MyPostsContainer />
     </div>
 }
 export default Profile;

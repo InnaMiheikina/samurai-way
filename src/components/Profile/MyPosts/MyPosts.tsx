@@ -1,15 +1,13 @@
 import React, {ChangeEvent, useRef} from "react";
 import Post from "./Post/Post";
 import s from './MyPosts.module.css';
-import {ActionType, AddPostAC, UpDateNewPostTextAC} from "../../Redax/state";
 
 
-type PostDataTypeProps = {
+type MyPostTypeProps = {
     posts: Array<PostDataType>
-   /* addPost:(newPostText:string) => void*/
-   /* updateNewPostText:(newText:string) => void*/
-   newPostText:string
-    dispatch:(action:ActionType)=> void
+    newPostText: string
+    addPost:()=>void
+    updateNewPostText:(text:string)=>void
 }
 type PostDataType = {
     id: number,
@@ -17,32 +15,32 @@ type PostDataType = {
     likesCount: number
 }
 
-function MyPosts(props: PostDataTypeProps) {
-    const  postsElements = props.posts.map((e) => {
+function MyPosts(props: MyPostTypeProps) {
+    const postsElements = props.posts.map((e) => {
         return (
             <li key={e.id}><Post message={e.message} likesCount={e.likesCount}/>
             </li>
         )
     })
 
-    const addPost = () => {
-           props.dispatch(AddPostAC(props.newPostText))
-        }
-
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(UpDateNewPostTextAC(e.currentTarget.value));
-        }
+        let text = e.currentTarget.value
+       props.updateNewPostText(text)
+    }
+
+    const onAddPost = () => {
+        props.addPost()
+    }
 
     return <div className={s.postsBlock}>
         <h3>My posts</h3>
         <div>
             <div>
-                <textarea  value={props.newPostText}
-                          onChange={onPostChange} />
+                <textarea value={props.newPostText}
+                          onChange={onPostChange}/>
             </div>
             <div>
-                <button onClick={addPost}>Add post</button>
-                {/*добавляем пост*/}
+                <button onClick={onAddPost}>Add post</button>
             </div>
 
         </div>

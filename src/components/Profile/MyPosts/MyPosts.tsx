@@ -36,8 +36,7 @@ function MyPosts(props: MyPostTypeProps) {
         <h3>My posts</h3>
         <div>
             <div>
-                <textarea value={props.newPostText}
-                          onChange={onPostChange}/>
+                <textarea onChange={onPostChange} value={props.newPostText}/>
             </div>
             <div>
                 <button onClick={onAddPost}>Add post</button>

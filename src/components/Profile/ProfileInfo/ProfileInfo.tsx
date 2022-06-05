@@ -5,8 +5,8 @@ import s from "./ProfileInfo.module.css"
 function ProfileInfo(){
     return  (
         <div>
-        <div>
-            <img src=" https://wpapers.ru/wallpapers/Space/11484/PREV_%D0%A1%D0%B8%D0%BD%D0%B8%D0%B9-%D0%BA%D0%BE%D1%81%D0%BC%D0%BE%D1%81.jpg" />
+        <div >
+            <img  className={s.img} src='https://img.freepik.com/free-photo/river-surrounded-by-forests-under-a-cloudy-sky-in-thuringia-in-germany_181624-30863.jpg?w=2000' />
         </div>
             <div className= {s.descriptionBlock} >
                 ava+description

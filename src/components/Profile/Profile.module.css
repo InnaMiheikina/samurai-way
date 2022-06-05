@@ -1,6 +1,7 @@
 
 .content img {
-
+width: 10px;
+height: 10px;
 }
 .item {
     color: aqua;

@@ -8,6 +8,8 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Setting from "./components/Setting/Setting";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
+import UsersContainer from "./components/Users/usersContainer";
+
 
 /*type AppProps = {
     store:  Store<RootStateType>
@@ -24,6 +26,7 @@ const App = () => {
                     <Route path="/news" render={() => <News/>}/>
                     <Route path="/music" render={() => <Music/>}/>
                     <Route path="/setting" render={() => <Setting/>}/>
+                    <Route path="/users" render={() => <UsersContainer />}/>
 
                 </div>
             </div>

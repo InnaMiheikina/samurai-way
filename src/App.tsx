@@ -10,23 +10,18 @@ import Setting from "./components/Setting/Setting";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/usersContainer";
 
-
-/*type AppProps = {
-    store:  Store<RootStateType>
-}*/
-
 const App = () => {
     return (
             <div className={s.wrapper}>
                 <Header/>
                 <Navbar/>
                 <div className={s.app_wrapper_content}>
-                    <Route path="/dialogs" render={() => < DialogsContainer/>}/>
+                    <Route path="/dialogs" render={() => < DialogsContainer />}/>
                     <Route path="/profile" render={() => <Profile/>}/>
                     <Route path="/news" render={() => <News/>}/>
                     <Route path="/music" render={() => <Music/>}/>
                     <Route path="/setting" render={() => <Setting/>}/>
-                    <Route path="/users" render={() => <UsersContainer />}/>
+                    <Route path="/users" render={() => <UsersContainer/>}/>
 
                 </div>
             </div>

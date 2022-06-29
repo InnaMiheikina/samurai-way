@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {AppStateType} from "../../Redux/redux-store";
 
-
+export type ProfileContainerPropsType = MapStatePropsType & MapDispatchPropsType
 type MapStatePropsType = {
     posts: Array<PostsType>
     newPostText: string

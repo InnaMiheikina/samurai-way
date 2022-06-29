@@ -16,7 +16,7 @@ import Preloader from "../common/Preloader";
 type MapStatePropsType = {
     usersPage: InitialUsersStateType
 }
-export type mapDispatchPropsType = {
+ type mapDispatchPropsType = {
     follow: (userId: number) => void
     unfollow: (userId: number) => void
     setUsers: (users: UsersType[]) => void
@@ -64,29 +64,6 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
         usersPage: state.usersPage
     }
 }
-/*const mapDispatchToProps = (dispatch: Dispatch): mapDispatchPropsType =>
-{
-    return {
-        follow: (userId: number) => {
-            dispatch(followAC(userId))
-        },
-        unfollow: (userId: number) => {
-            dispatch(unfollowAC(userId))
-        },
-        setUsers: (users: UsersType[]) => {
-            dispatch(setUsersAC(users))
-        },
-        setCurrentPage: (pageNumber: number) => {
-            dispatch(setCurrentPageAC(pageNumber))
-        },
-        setTotalUsersCount: (totalCount: number) => {
-            dispatch(setUsersTotalCountAC(totalCount))
-        },
-        toggleIsFetching:(isFetching:boolean)=> {
-            dispatch(setIsFetchingAC(isFetching))
-        }
-    }
-}*/
 
 export default connect(mapStateToProps, {
     follow,

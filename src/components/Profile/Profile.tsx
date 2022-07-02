@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import MyPostsContainer, {ProfileContainerPropsType} from "./MyPosts/MyPostsConteiner";
+import MyPostsContainer  from "./MyPosts/MyPostsConteiner";
 import {InitialProfileReducerStateType} from "../Redux/profile-reducer";
 
 

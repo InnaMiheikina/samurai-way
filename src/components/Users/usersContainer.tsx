@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {AppStateType} from "../Redux/redux-store";
+import {AppStateType} from "../../Redux/redux-store";
 import Users from "../Users/Users";
 import {
     follow,
@@ -9,9 +9,9 @@ import {
     setUsers,
     unfollow,
     UsersType
-} from "../Redux/users-reducer";
-import axios from "axios";
+} from "../../Redux/users-reducer";
 import Preloader from "../common/Preloader";
+import { usersAPI} from "../../api/api";
 
 type MapStatePropsType = {
     usersPage: InitialUsersStateType
@@ -29,27 +29,21 @@ export type UsersPropsType = MapStatePropsType & mapDispatchPropsType
 class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {
         this.props.setIsFetching(true)//preloader
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.usersPage.currentPage}&count=${this.props.usersPage.pageSize}`,
-            {
-                withCredentials:true
-            })
-            .then(response => {
+
+        usersAPI.getUsers(this.props.usersPage.currentPage, this.props.usersPage.pageSize).then(data => {
                 this.props.setIsFetching(false)//убрать
-                this.props.setUsers(response.data.items)
+                this.props.setUsers(data.items)
             });
     }
 
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber)
         this.props.setIsFetching(true)//preloader
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.usersPage.pageSize}`,
-            {
-            withCredentials:true
-        })
-            .then(response => {
+
+        usersAPI.getUsers(pageNumber, this.props.usersPage.pageSize).then(data => {
                 this.props.setIsFetching(false)//убрать
-                this.props.setUsers(response.data.items);//users
-                this.props.setTotalUsersCount(response.data.totalCount);//страницы
+                this.props.setUsers(data.items);//users
+                this.props.setTotalUsersCount(data.totalCount);//страницы
             });
     }
 

@@ -2,8 +2,8 @@ import React from 'react';
 import Profile from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
-import {AppStateType} from "../Redux/redux-store";
-import {ProfileType, setUserProfile} from "../Redux/profile-reducer";
+import {AppStateType} from "../../Redux/redux-store";
+import {ProfileType, setUserProfile} from "../../Redux/profile-reducer";
 import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 type MapStatePropsType = {

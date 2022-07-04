@@ -5,11 +5,13 @@ import foto from './../../assets/images/pfoto.png'
 import { NavLink } from 'react-router-dom';
 import axios from "axios";
 
+
 type PropsType = {
     usersPage: UsersPropsType['usersPage']
     follow: UsersPropsType['follow']
     unfollow: UsersPropsType['unfollow']
     onPageChanged: (p: number) => void
+    toggleFollowingProgress:any
 }
 
 const Users = (props: PropsType) => {
@@ -36,7 +38,9 @@ const Users = (props: PropsType) => {
                             </div>
                         <div>
                             {u.followed
-                                ? <button onClick={() => {
+                                ? <button disabled={props.usersPage.followingInProgress.some(id=>id === u.id)}
+                                    onClick={() => {
+                                        props.toggleFollowingProgress(true,u.id)
                                     axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                         withCredentials:true ,
                                         headers: {
@@ -47,9 +51,12 @@ const Users = (props: PropsType) => {
                                             if (response.data.resultCode===0) {
                                                 props.unfollow(u.id)
                                             }
+                                            props.toggleFollowingProgress(false,u.id)
                                         });
                                    }}>unFollow</button>
-                                : <button onClick={() => {
+                                : <button disabled={props.usersPage.followingInProgress.some(id => id === u.id)}
+                                    onClick={() => {
+                                        props.toggleFollowingProgress(true,u.id)
                                     axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,{}, {
                                         withCredentials:true ,
                                         headers: {
@@ -60,6 +67,7 @@ const Users = (props: PropsType) => {
                                             if (response.data.resultCode===0) {
                                                 props.follow(u.id)
                                             }
+                                            props.toggleFollowingProgress(false,u.id)
                                         });
                                    }}>Follow</button>}
                         </div>

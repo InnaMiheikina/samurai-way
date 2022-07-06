@@ -16,7 +16,7 @@ const initialState:InitialUsersStateType ={
     id: null,
     email: null,
     login: null,
-    isAuth:false
+    isAuth:false//залогинен
 }
 
 export const authReducer = (state:InitialUsersStateType=initialState, action:ActionType):InitialUsersStateType=> {

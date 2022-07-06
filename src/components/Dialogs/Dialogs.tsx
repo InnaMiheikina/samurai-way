@@ -2,12 +2,14 @@ import React, {ChangeEvent} from "react";
 import s from './Dialogs.module.css';
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {DialogType, InitDialogsReducerStateType, MessageType} from "../../Redux/dialogs-reducer";
+import { InitDialogsReducerStateType} from "../../Redux/dialogs-reducer";
+import {Redirect} from 'react-router-dom';
 
 type DialogsTypeProps = {
     updateNewMessageBody: (body:string)=> void
     sendMessage:()=> void
     dialogsPage: InitDialogsReducerStateType
+    isAuth:boolean
 }
 
 function Dialogs(props: DialogsTypeProps) {
@@ -24,6 +26,7 @@ function Dialogs(props: DialogsTypeProps) {
     const sendMessage = () => {
         props.sendMessage()
     }
+    if(!props.isAuth) return <Redirect to={'/login'}/> //не залогинен?redirect
 
     return (
         <div className={s.dialogs}>

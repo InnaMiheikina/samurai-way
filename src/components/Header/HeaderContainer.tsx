@@ -1,10 +1,9 @@
 import React from "react";
 import Header from "./Header";
-import axios from "axios";
-import {getAuthUserData, setAuthUserData} from "../../Redux/auth-reducer";
+import {getAuthUserData} from "../../Redux/auth-reducer";
 import {connect} from "react-redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {authAPI} from "../../api/api";
+
 
 
 type MapStatePropsType = {

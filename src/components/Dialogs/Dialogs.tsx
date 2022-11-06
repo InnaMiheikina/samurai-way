@@ -13,6 +13,7 @@ type DialogsTypeProps = {
 }
 
 function Dialogs(props: DialogsTypeProps) {
+    debugger
     let state = props.dialogsPage
 
     let messagesElement = state.messages.map(m => <Message key={m.id} message={m.message} id={m.id}/>);
@@ -26,7 +27,9 @@ function Dialogs(props: DialogsTypeProps) {
     const sendMessage = () => {
         props.sendMessage()
     }
-    if(!props.isAuth) return <Redirect to={'/login'}/> //не залогинен?redirect
+
+
+    // if(!props.isAuth) return <Redirect to={'/login'}/> //не залогинен?redirect
 
     return (
         <div className={s.dialogs}>

@@ -6,14 +6,14 @@ const SET_USER_DATA = 'SET_USER_DATA'
 
 
 export type InitialUsersStateType={
-    id: number | null,
+    userId: number | null,
     email: string | null,
     login: string | null,
     isAuth:boolean
 }
 
 const initialState:InitialUsersStateType ={
-    id: null,
+    userId: null,
     email: null,
     login: null,
     isAuth:false//залогинен
@@ -37,6 +37,7 @@ export const setAuthUserData = (userId:number,email:string, login:string) => ({t
 export const getAuthUserData = () =>(dispatch:Dispatch)=>{
     authAPI.me()
         .then(response => {
+            debugger
             if (response.data.resultCode===0) {
                 let {id,email, login} = response.data.data
                 dispatch(setAuthUserData(id, email, login))

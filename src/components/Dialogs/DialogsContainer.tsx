@@ -1,10 +1,9 @@
 import React from "react";
-import {InitDialogsReducerStateType, sendMessageAC, updateNewMessageBodyAC} from "../../Redux/dialogs-reducer";
+import {InitDialogsReducerStateType, sendMessageAC} from "../../Redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
 import {AppStateType} from "../../Redux/redux-store";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 
 
@@ -19,11 +18,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
 }
 let mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        sendMessage: () => {
-            dispatch(sendMessageAC())
-        },
-        updateNewMessageBody: (body: string) => {
-            dispatch(updateNewMessageBodyAC(body))
+        sendMessage: (newMessageBody:string) => {
+            dispatch(sendMessageAC(newMessageBody))
         }
     }
 }

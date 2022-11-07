@@ -1,5 +1,5 @@
-import {AddPostAC, profileReducer, UpDateNewPostTextAC} from "./profile-reducer";
-import {dialogsReducer, sendMessageAC, updateNewMessageBodyAC} from "./dialogs-reducer";
+import {AddPostAC} from "./profile-reducer";
+import { sendMessageAC} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 
 type PostsType = {
@@ -42,10 +42,8 @@ export type StoreType = {
 
 
 type AddPostActionType = ReturnType<typeof AddPostAC>
-type upDateNewPostTextActionType = ReturnType<typeof UpDateNewPostTextAC>
 type SendMessageActionType = ReturnType<typeof sendMessageAC>
-type UpdateNewMessageBodyActionType = ReturnType<typeof updateNewMessageBodyAC>
-export type ActionType = AddPostActionType | upDateNewPostTextActionType | SendMessageActionType | UpdateNewMessageBodyActionType;
+export type ActionType = AddPostActionType | SendMessageActionType;
 
 
 let store: StoreType = {
@@ -100,7 +98,6 @@ let store: StoreType = {
     },
     dispatch(action: any) {
         //this._state.profilePage = profileReducer(this._state.profilePage, action);
-        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
         this._state.sidebar = sidebarReducer(this._state.sidebar, action)
         this.callSubscriber()
     },

@@ -14,11 +14,9 @@ import Preloader from "../common/Preloader";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
+import {getUsersPage} from "../../Redux/users-selectors";
 
 
-type MapStatePropsType = {
-    usersPage: InitialUsersStateType
-}
 type mapDispatchPropsType = {
     follow: (userId: number) => void
     unfollow: (userId: number) => void
@@ -52,9 +50,17 @@ class UsersContainer extends React.Component<UsersPropsType> {
     };
 }
 
-const mapStateToProps = (state: AppStateType): MapStatePropsType => {
+/*const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         usersPage: state.usersPage,
+    }
+}*/
+type MapStatePropsType = {
+    usersPage: InitialUsersStateType
+}
+const mapStateToProps = (state: AppStateType): MapStatePropsType => {
+    return {
+        usersPage: getUsersPage(state)
     }
 }
 export  default compose <React.ComponentType> (

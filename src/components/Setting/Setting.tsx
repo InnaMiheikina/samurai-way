@@ -1,4 +1,6 @@
 import React from "react";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 
 function Setting () {
@@ -6,4 +8,4 @@ function Setting () {
         <div>Music</div>
     )
 }
-export default Setting;
+export default compose <React.ComponentType>(withAuthRedirect)(Setting)

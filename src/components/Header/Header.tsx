@@ -5,6 +5,7 @@ import s from './Header.module.css';
 type PropsType = {
     isAuth: boolean
     login: string | null
+    logoutTC:()=> void
 }
 
 function Header(props: PropsType) {
@@ -12,7 +13,8 @@ function Header(props: PropsType) {
         <header className={s.header}>
             <img src=""/>
             <div className={s.loginBlock}>
-                {props.isAuth ? props.login
+                {props.isAuth
+                    ? <div>{props.login} - <button onClick={props.logoutTC}>Log out</button></div>
                     : <NavLink to={'/login'}>Login</NavLink>}
             </div>
         </header>

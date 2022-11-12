@@ -1,5 +1,6 @@
 import {authAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'SET_USER_DATA'
 
@@ -25,7 +26,6 @@ export const authReducer = (state:InitialUsersStateType=initialState, action:Act
         return {
         ...state,
             ...action.data,
-            isAuth:true
         }
 
         default:
@@ -33,16 +33,37 @@ export const authReducer = (state:InitialUsersStateType=initialState, action:Act
     }
 }
 
-export const setAuthUserData = (userId:number,email:string, login:string) => ({type: SET_USER_DATA, data:{userId,email,login}} as const  )
-export const getAuthUserData = () =>(dispatch:Dispatch)=>{
+export const setAuthUserDataAC = (userId:any, email:any, login:any, isAuth:any) => ({type: SET_USER_DATA, data:
+        {userId,email,login,isAuth}} as const  )
+
+export const getAuthUserDataTC = () =>(dispatch:Dispatch)=>{
     authAPI.me()
         .then(response => {
             if (response.data.resultCode===0) {
                 let {id,email, login} = response.data.data
-                dispatch(setAuthUserData(id, email, login))
+                dispatch(setAuthUserDataAC(id, email, login, true))
+            }
+        });
+}
+export const loginTC = (email:string, password:string, rememberMe:boolean) =>(dispatch:any)=>{
+    authAPI.login(email,password,rememberMe)
+        .then(response => {
+            if (response.data.resultCode===0) {
+              dispatch(getAuthUserDataTC())
+            }else {
+              let message = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error';
+                dispatch(stopSubmit('login',{_error: message}));//созд. общая для всей формы ошибка
+            }
+        });
+}
+export const logoutTC = () =>(dispatch:Dispatch)=>{
+    authAPI.logout()
+        .then(response => {
+            if (response.data.resultCode===0) {
+                dispatch(setAuthUserDataAC(null, null, null, false))
             }
         });
 }
 
-type ActionType = ReturnType<typeof setAuthUserData>
+type ActionType = ReturnType<typeof setAuthUserDataAC>
 

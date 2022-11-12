@@ -12,9 +12,8 @@ import {
 } from "../../Redux/users-reducer";
 import Preloader from "../common/Preloader";
 import {compose} from "redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
-import {getUsersPage} from "../../Redux/users-selectors";
+import { getUsersSelector} from "../../Redux/users-selectors";
 
 
 type mapDispatchPropsType = {
@@ -60,7 +59,7 @@ type MapStatePropsType = {
 }
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
-        usersPage: getUsersPage(state)
+        usersPage: getUsersSelector(state)
     }
 }
 export  default compose <React.ComponentType> (

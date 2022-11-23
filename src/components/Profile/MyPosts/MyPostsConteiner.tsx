@@ -8,14 +8,13 @@ import {AppStateType} from "../../../Redux/redux-store";
 export type ProfileContainerPropsType = MapStatePropsType & MapDispatchPropsType
 type MapStatePropsType = {
     posts: Array<PostsType>
-
 }
 type MapDispatchPropsType = {
     addPost: (newPostText:string) =>void
 }
 
 
-let mapStateToProps = (state: AppStateType):  MapStatePropsType => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         posts: state.profilePage.posts,
     }

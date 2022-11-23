@@ -1,12 +1,11 @@
-import React, {ChangeEventHandler} from 'react';
+import React, { PureComponent} from 'react';
 
 export type ProfileStatusType = {
     status:string
     updateStatus:(status: string) => void
 }
 
-class ProfileStatus extends React.Component<ProfileStatusType> {
-
+class ProfileStatus extends PureComponent<ProfileStatusType>  {
     state = {
         editMode: false,
         status: this.props.status
@@ -31,6 +30,7 @@ class ProfileStatus extends React.Component<ProfileStatusType> {
     }
 
     render() {
+        console.log('pureComponent')
         return (
             <div>
                 {!this.state.editMode &&

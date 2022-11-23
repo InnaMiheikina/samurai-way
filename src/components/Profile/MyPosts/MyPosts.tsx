@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import Post from "./Post/Post";
 import s from './MyPosts.module.css';
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
@@ -16,7 +16,8 @@ type PostDataType = {
     likesCount: number
 }
 
-function MyPosts(props: MyPostTypeProps) {
+const MyPosts = memo((props: MyPostTypeProps) => {
+    console.log('memo')
     const postsElements = props.posts.map((e) => {
         return (
             <li key={e.id}><Post message={e.message} likesCount={e.likesCount}/>
@@ -35,7 +36,7 @@ function MyPosts(props: MyPostTypeProps) {
             {postsElements}
         </div>
     </div>;
-}
+})
 
 let maxLength10 = maxLengthCreator(10);
 const AddNewPostForm:React.FC<InjectedFormProps> =(props ) =>{

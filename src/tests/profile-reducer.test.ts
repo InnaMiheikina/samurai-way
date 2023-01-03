@@ -20,3 +20,9 @@ it('after delete length of message should be decrement', ()=> {
     let newState = profileReducer(state,action);
     expect(newState.posts.length).toBe(1)
 })
+
+it('after delete length should`t be decrement if id is incorrect', ()=> {
+    let action = deletePostAC(10)
+    let newState = profileReducer(state,action);
+    expect(newState.posts.length).toBe(2)
+})

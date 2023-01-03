@@ -1,10 +1,10 @@
 import {Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
 
-const ADD_POST = 'ADD-POST'
-const SET_USER_PROFILE = 'SET-USER-PROFILE'
-const SET_STATUS = 'SET-STATUS'
-const DELETE_POST = 'DELETE-POST'
+const ADD_POST = 'profile/ADD-POST'
+const SET_USER_PROFILE = 'profile/SET-USER-PROFILE'
+const SET_STATUS = 'profile/SET-STATUS'
+const DELETE_POST = 'profile/DELETE-POST'
 
 type ActionsType = ReturnType<typeof AddPostAC>
     | ReturnType<typeof setUserProfile>
@@ -57,32 +57,26 @@ export const profileReducer = (state = initialState, action: ActionsType): Initi
     }
 }
 
-export const AddPostAC = (newPostText: string) => ({type: 'ADD-POST', newPostText} as const)
+export const AddPostAC = (newPostText: string) => ({type:ADD_POST, newPostText} as const)
 export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
 export const deletePostAC = (postId: number) => ({type: DELETE_POST, postId} as const)
 
 
-export const getUserProfile = (userId: number) => (dispatch: Dispatch) => {
-    usersAPI.getProfile(userId)
-        .then(response => {
+export const getUserProfile = (userId: number) => async (dispatch: Dispatch) => {
+   let response = await usersAPI.getProfile(userId)
             dispatch(setUserProfile(response.data))
-        });
 }
-export const getStatus = (userId: number) => (dispatch: Dispatch) => {
-    profileAPI.getStatus(userId)
-        .then(response => {
+export const getStatus = (userId: number) => async(dispatch: Dispatch) => {
+    let response = await profileAPI.getStatus(userId)
             dispatch(setStatus(response.data))
-        });
 }
 
-export const updateStatus = (status: string) => (dispatch: Dispatch) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
+export const updateStatus = (status: string) =>async (dispatch: Dispatch) => {
+    let response = await profileAPI.updateStatus(status)
             if (response.data.resultCode === 0) {
                 dispatch(setStatus(status))
             }
-        });
 }
 
 type ContactsType = {

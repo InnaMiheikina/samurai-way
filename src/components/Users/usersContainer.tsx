@@ -8,7 +8,7 @@ import {
     setCurrentPage, setIsFetching, setTotalUsersCount,
     setUsers, toggleFollowingProgress,
     unfollow,
-    UsersType
+    UserType
 } from "../../Redux/users-reducer";
 import Preloader from "../common/Preloader";
 import {compose} from "redux";
@@ -19,7 +19,7 @@ import { getUsersSelector} from "../../Redux/users-selectors";
 type mapDispatchPropsType = {
     follow: (userId: number) => void
     unfollow: (userId: number) => void
-    setUsers: (users: UsersType[]) => void
+    setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
     setTotalUsersCount: (totalCount: number) => void
     setIsFetching: (isFetching: boolean) => void
@@ -30,11 +30,13 @@ export type UsersPropsType = MapStatePropsType & mapDispatchPropsType
 
 class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {
-        this.props.getUsers(this.props.usersPage.currentPage,this.props.usersPage.pageSize )
+        const {currentPage,pageSize} = this.props.usersPage
+        this.props.getUsers(currentPage,pageSize )
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsers(pageNumber,this.props.usersPage.pageSize)
+        const {pageSize} = this.props.usersPage
+        this.props.getUsers(pageNumber,pageSize)
     }
 
     render() {

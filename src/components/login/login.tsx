@@ -16,7 +16,6 @@ type FormDataType = {
 }
 
 const LoginForm:React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    console.log('props', props)
     return (
             <form onSubmit={props.handleSubmit}>
                 <div>

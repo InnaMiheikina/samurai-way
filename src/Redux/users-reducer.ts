@@ -35,7 +35,7 @@ export type InitialUsersStateType = {
 
 const initialState: InitialUsersStateType = {
     users: [],
-    pageSize: 5,//количество Userов на странице
+    pageSize: 10,//количество Userов на странице
     totalUsersCount: 21, //всего пользователей
     currentPage: 1,//текущая страница
     isFetching: false,

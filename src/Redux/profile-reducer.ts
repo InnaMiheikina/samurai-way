@@ -5,11 +5,12 @@ const ADD_POST = 'profile/ADD-POST'
 const SET_USER_PROFILE = 'profile/SET-USER-PROFILE'
 const SET_STATUS = 'profile/SET-STATUS'
 const DELETE_POST = 'profile/DELETE-POST'
+const SAVE_PHOTO_SUCCESS = 'profile/SAVE-PHOTO-SUCCESS'
 
 type ActionsType = ReturnType<typeof AddPostAC>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
-    | ReturnType<typeof deletePostAC>
+    | ReturnType<typeof deletePostAC> | ReturnType<typeof savePhotoSuccessAC>
 
 export type PostsType = {
     id: number,
@@ -18,7 +19,7 @@ export type PostsType = {
 }
 export type InitialProfileReducerStateType = {
     posts: Array<PostsType>
-    profile: ProfileType | null
+    profile:any | null
     status: string
 }
 const initialState: InitialProfileReducerStateType = {
@@ -42,7 +43,6 @@ export const profileReducer = (state = initialState, action: ActionsType): Initi
                 posts: [...state.posts, newPost],
             };
         }
-
         case SET_USER_PROFILE: {
             return {...state, profile: action.profile}
         }
@@ -51,32 +51,41 @@ export const profileReducer = (state = initialState, action: ActionsType): Initi
         }
         case DELETE_POST:
             return {...state, posts: state.posts.filter(p => p.id !== action.postId)}
+        case SAVE_PHOTO_SUCCESS:
+            return {...state, profile: {...state.profile, photos: action.photos}}
 
         default:
             return state
-    }
-}
+    }}
 
-export const AddPostAC = (newPostText: string) => ({type:ADD_POST, newPostText} as const)
+
+export const AddPostAC = (newPostText: string) => ({type: ADD_POST, newPostText} as const)
 export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
 export const deletePostAC = (postId: number) => ({type: DELETE_POST, postId} as const)
+export const savePhotoSuccessAC = (photos: string) => ({type: SAVE_PHOTO_SUCCESS, photos} as const)
 
 
 export const getUserProfile = (userId: number) => async (dispatch: Dispatch) => {
-   let response = await usersAPI.getProfile(userId)
-            dispatch(setUserProfile(response.data))
+    let response = await usersAPI.getProfile(userId)
+    dispatch(setUserProfile(response.data))
 }
-export const getStatus = (userId: number) => async(dispatch: Dispatch) => {
+export const getStatus = (userId: number) => async (dispatch: Dispatch) => {
     let response = await profileAPI.getStatus(userId)
-            dispatch(setStatus(response.data))
+    dispatch(setStatus(response.data))
 }
 
-export const updateStatus = (status: string) =>async (dispatch: Dispatch) => {
+export const updateStatus = (status: string) => async (dispatch: Dispatch) => {
     let response = await profileAPI.updateStatus(status)
-            if (response.data.resultCode === 0) {
-                dispatch(setStatus(status))
-            }
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
+}
+export const savePhoto = (file: string) => async (dispatch: Dispatch) => {
+    let res = await profileAPI.savePhoto(file)
+    if (res.data.resultCode === 0) {
+        dispatch(savePhotoSuccessAC(res.data.data.photos))
+    }
 }
 
 type ContactsType = {

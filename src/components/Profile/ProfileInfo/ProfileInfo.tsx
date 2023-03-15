@@ -8,27 +8,29 @@ type ProfileInfoPropsType = {
     profile: InitialProfileReducerStateType['profile']
     status: string
     updateStatus: (status: string) => void
+    isOwner: any
+    savePhoto:any
 }
 
-function ProfileInfo({status,updateStatus,profile}: ProfileInfoPropsType) {
+function ProfileInfo({status, updateStatus, profile, isOwner, savePhoto}: ProfileInfoPropsType) {
     if (!profile) {
         return <Preloader/>
     }
+    const onMainPhotoSelected = (e: any) => {
+        if (e.target.files.length) {
+            savePhoto(e.target.files[0])
+        }
+    }
     return (
-
-           /* <div >
-                <img  className={s.img} src='https://img.freepik.com/free-photo/river-surrounded-by-forests-under-a-cloudy-sky-in-thuringia-in-germany_181624-30863.jpg?w=2000' />
-            </div>*/
-            <div className={s.descriptionBlock}>
-                {profile ? <img
-                        src={profile.photos.small
-                            ? profile.photos.large
-                            : 'https://img.freepik.com/free-photo/river-surrounded-by-forests-under-a-cloudy-sky-in-thuringia-in-germany_181624-30863.jpg?w=2000'}/> :
-                    <Preloader/>}
-            <span>{profile ? profile.contacts.github : 'loading'}</span>
+        <div className={s.descriptionBlock}>
+            <img
+                src={profile.photos.large || 'https://img.freepik.com/free-photo/river-surrounded-by-forests-under-a-cloudy-sky-in-thuringia-in-germany_181624-30863.jpg?w=2000'}
+                className={s.mainPhoto}/>
+            {isOwner && <input type={'file'} onChange={onMainPhotoSelected}/>}
             <ProfileStatus status={status} updateStatus={updateStatus}/>
-            </div>
-    )}
+        </div>
+    )
+}
 
 
 export default ProfileInfo;

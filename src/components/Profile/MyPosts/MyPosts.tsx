@@ -20,7 +20,7 @@ const MyPosts = memo((props: MyPostTypeProps) => {
     console.log('memo')
     const postsElements = props.posts.map((e) => {
         return (
-            <li key={e.id}><Post message={e.message} likesCount={e.likesCount}/>
+            <li key={e.id}><Post  message={e.message} likesCount={e.likesCount}/>
             </li>
         )
     })

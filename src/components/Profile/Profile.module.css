@@ -1,4 +1,10 @@
+.profileItem{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    height: auto;
 
+}
 .content img {
 width: 10px;
 height: 10px;

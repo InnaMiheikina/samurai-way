@@ -6,32 +6,6 @@ import {AppStateType} from "../../../Redux/redux-store";
 import s from './ProfileInfo.module.css'
 import style from "../../FormsControls/FormsControls.module.css";
 
-
-/*const ProfileDataForm:FC<InjectedFormProps<{fullname: string, lookingForAJob:string,lookingForAJobDescriptional:string, aboutMe:string},{profile:any}>> = ({profile,handleSubmit}:  any) => {
-        return  <form onSubmit={handleSubmit}>
-       <div><button>save</button></div>
-        <div>
-            <b>Full name</b>: {createField('Full name', 'fullname', [], Input )}
-        </div>
-        <div>
-            <b>Looking for a job</b>:{ createField('', "lookingForAJob", [], Input, {type:'checkbox'} ) }
-        </div>
-        {profile.lookingForAJob &&
-            <div>
-                <b>My professional skills</b>: { createField('My professional skills', 'lookingForAJobDescriptional', [], Textarea )}
-            </div>
-        }
-        <div>
-            <b>About me</b>:{profile.aboutMe}
-            { createField('About me', 'aboutMe', [], Textarea ) }
-        </div>
-       {/!* <div>
-            <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {
-            return <Contact contactTitle={key} contactValue={profile.contacts[key]} key={key}/>
-        })}
-        </div>*!/}
-    </form>
-}*/
 export type ProfileFormDataType = {
     fullName: string
     lookingForAJob: boolean

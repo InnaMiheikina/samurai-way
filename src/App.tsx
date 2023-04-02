@@ -1,7 +1,7 @@
 import React, {Suspense} from 'react';
 import s from "./App.module.css";
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Redirect, Route, withRouter} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Setting from "./components/Setting/Setting";
@@ -21,9 +21,18 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/profileCo
 
 export type AppPropsType = mapDispatchPropsType & mapStateToPropsType
 
-class App extends React.Component <AppPropsType>{
+class App extends React.Component <AppPropsType> {
+    catchAllUnhandledErrors = (reason, promise) => {
+        alert('');//dispatch thunk
+    }
+
     componentDidMount() {
-        this.props.initializeAppTC()
+        this.props.initializeAppTC();
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
     }
 
     render() {
@@ -36,6 +45,7 @@ class App extends React.Component <AppPropsType>{
                 <HeaderContainer/>
                 <Navbar/>
                 <div className={s.app_wrapper_content}>
+                    <Switch>
                     <Route path='/' render={() => <Redirect to={'/profile'}/>}/>
                     <Route path='/dialogs'
                            render={withSuspense (DialogsContainer)}/>
@@ -46,11 +56,14 @@ class App extends React.Component <AppPropsType>{
                     <Route path='/setting' render={() => <Setting/>}/>
                     <Route path='/users' render={() => <UsersContainer/>}/>
                     <Route path='/login' render={() => <Login/>}/>
+                    <Route path='/*' render={() => <div>404 NOT FOUND</div}/>
+                        </Switch>
                 </div>
             </div>
         )
     }
     }
+                        }
     type mapDispatchPropsType = {
         initializeAppTC:() => void
     }

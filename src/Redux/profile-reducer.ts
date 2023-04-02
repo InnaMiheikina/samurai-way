@@ -1,7 +1,7 @@
-import {AnyAction, Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
-import {AppStateType, AppThunk} from "./redux-store";
+import {AppThunk} from "./redux-store";
 import {stopSubmit} from "redux-form";
+import {handleError} from "../utils/error-utils";
 
 const ADD_POST = 'profile/ADD-POST'
 const SET_USER_PROFILE = 'profile/SET-USER-PROFILE'
@@ -13,7 +13,9 @@ const SAVE_PROFILE = 'profile/SAVE-PROFILE'
 type ActionsType = ReturnType<typeof AddPostAC>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
-    | ReturnType<typeof deletePostAC> | ReturnType<typeof savePhotoSuccessAC> | ReturnType<typeof saveProfileAC>
+    | ReturnType<typeof deletePostAC>
+    | ReturnType<typeof savePhotoSuccessAC>
+    | ReturnType<typeof saveProfileAC>
 
 export type PostsType = {
     id: number,
@@ -75,34 +77,53 @@ export const saveProfileAC = (profile: any) => ({type: SAVE_PROFILE, profile} as
 
 export const getUserProfile = (userId: number | null): AppThunk => async (dispatch) => {
     let response = await usersAPI.getProfile(userId!)
-    dispatch(setUserProfile(response.data))
+    try{
+        dispatch(setUserProfile(response.data))
+    }catch (error){
+        handleError(error, dispatch);
+    }
 }
 export const getStatus = (userId: number): AppThunk => async (dispatch) => {
     let response = await profileAPI.getStatus(userId)
-    dispatch(setStatus(response.data))
+    try{
+        dispatch(setStatus(response.data))
+    }catch (error){
+        handleError(error, dispatch);
+    }
 }
 
 export const updateStatus = (status: string): AppThunk => async (dispatch) => {
     let response = await profileAPI.updateStatus(status)
-    if (response.data.resultCode === 0) {
-        dispatch(setStatus(status))
+        try{
+            if (response.data.resultCode === 0) {
+                dispatch(setStatus(status))
+            }
+        }catch (error){
+            handleError(error, dispatch);
+        }
     }
-}
 export const savePhoto = (file: string): AppThunk => async (dispatch) => {
     let res = await profileAPI.savePhoto(file)
-    if (res.data.resultCode === 0) {
-        dispatch(savePhotoSuccessAC(res.data.data.photos))
+    try {
+        if (res.data.resultCode === 0) {
+            dispatch(savePhotoSuccessAC(res.data.data.photos))
+        }
+    }catch (error){
+        handleError(error, dispatch);
     }
 }
 export const saveProfile = (profile: any): AppThunk => async (dispatch, getState) => {
     const userId = getState().auth.userId;
     const res = await profileAPI.saveProfile(profile);
-    if (res.data.resultCode === 0) {
-
-        dispatch(getUserProfile(userId));
-    } else {
-        dispatch(stopSubmit('edit-profile', {_error: res.data.messages[0]}))
-        return Promise.reject(res.data.messages[0])
+    try {
+        if (res.data.resultCode === 0) {
+            dispatch(getUserProfile(userId));
+        } else {
+            dispatch(stopSubmit('edit-profile', {_error: res.data.messages[0]}))
+            return Promise.reject(res.data.messages[0])
+        }
+    }catch (error){
+        handleError(error, dispatch);
     }
 }
 

@@ -1,7 +1,7 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import s from "./App.module.css";
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {HashRouter, Redirect, Route, withRouter} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Setting from "./components/Setting/Setting";
@@ -10,10 +10,13 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/login/login";
 import {connect, Provider} from "react-redux";
 import {compose} from "redux";
-import {initializeAppTC} from "./Redux/app-reducer";
+import {globalErrorAC, initializeAppTC} from "./Redux/app-reducer";
 import {AppStateType} from "./Redux/redux-store";
 import Preloader from "./components/common/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
+
+
+
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/profileContainer'));
@@ -22,74 +25,78 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/profileCo
 export type AppPropsType = mapDispatchPropsType & mapStateToPropsType
 
 class App extends React.Component <AppPropsType> {
-    catchAllUnhandledErrors = (reason, promise) => {
-        alert('');//dispatch thunk
+
+    catchAllUnhandledErrors = () => {
+       globalErrorAC('Some error occurred 404')
     }
 
     componentDidMount() {
         this.props.initializeAppTC();
-        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors);
+           window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors);
     }
 
     componentWillUnmount() {
         window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
     }
 
+
     render() {
         if (!this.props.initialized) {
             return <Preloader/>
         }
-
+        console.log(this.props.initialized, 'this.props.initialized')
         return (
             <div className={s.wrapper}>
+                {this.props.error ?  <div className={s.error}>{this.props.error}</div> : ''}
                 <HeaderContainer/>
                 <Navbar/>
                 <div className={s.app_wrapper_content}>
-                    <Switch>
-                    <Route path='/' render={() => <Redirect to={'/profile'}/>}/>
-                    <Route path='/dialogs'
-                           render={withSuspense (DialogsContainer)}/>
-                    <Route path='/profile/:userId?'
-                           render={withSuspense (ProfileContainer)}/>
-                    <Route path='/news' render={() => <News/>}/>
-                    <Route path='/music' render={() => <Music/>}/>
-                    <Route path='/setting' render={() => <Setting/>}/>
-                    <Route path='/users' render={() => <UsersContainer/>}/>
-                    <Route path='/login' render={() => <Login/>}/>
-                    <Route path='/*' render={() => <div>404 NOT FOUND</div}/>
-                        </Switch>
+                    <Route>
+                        <Route path='/' render={() => <Redirect to={'/profile'}/>}/>
+                        <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
+                        <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
+                        <Route path='/news' render={() => <News/>}/>
+                        <Route path='/music' render={() => <Music/>}/>
+                        <Route path='/setting' render={() => <Setting/>}/>
+                        <Route path='/users' render={() => <UsersContainer/>}/>
+                        <Route path='/login' render={() => <Login/>}/>
+                        {/*<Route path='/*' render={() => <div>404 NOT FOUND</div>}/>*/}
+                    </Route>
                 </div>
             </div>
         )
     }
-    }
-                        }
-    type mapDispatchPropsType = {
-        initializeAppTC:() => void
-    }
+}
 
-    type mapStateToPropsType = {
-        initialized:boolean
-    }
-    const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
-        return {
-            initialized: state.app.initialized,
-        }
-    }
+type mapDispatchPropsType = {
+    initializeAppTC:() => void
+    globalErrorAC:(globalError:string)=>void
+}
+type mapStateToPropsType = {
+    initialized: boolean,
+    error:string | null
 
-    let AppContainer = compose
-        <React.ComponentType>(
-            withRouter,
-            connect(mapStateToProps, {initializeAppTC}))(App);
+}
+const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
+    return {
+        initialized: state.app.initialized,
+        error:state.app.globalError
+    }
+}
 
-            type SamuraiJSAppType={
-                store:any
-            }
-            const SamuraiJSApp = ({store}:SamuraiJSAppType)=> {
-                return <BrowserRouter>
-                <Provider store={store}>
-                <AppContainer />
-                </Provider>
-                </BrowserRouter>
-            }
-            export default SamuraiJSApp;
+let AppContainer = compose<React.ComponentType>(
+    withRouter,
+    connect(mapStateToProps, {initializeAppTC,globalErrorAC}))(App);
+
+type SamuraiJSAppType = {
+    store: any
+}
+const SamuraiJSApp = ({store}: SamuraiJSAppType) => {
+    return <HashRouter>
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>
+    </HashRouter>
+}
+export default SamuraiJSApp;
+

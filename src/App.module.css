@@ -13,4 +13,9 @@ width: 1200px;
   grid-area: c;
   background-color: #f0faff;
 }
+.error{
+  width: 30px;
+  height:60px ;
+  color: red;
+}
 

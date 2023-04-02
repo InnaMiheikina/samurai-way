@@ -1,5 +1,6 @@
 import {usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {handleError} from "../utils/error-utils";
 
 
 const FOLLOW = 'FOLLOW'
@@ -103,24 +104,32 @@ type ActionType = ReturnType<typeof followSuccess>
     | ReturnType<typeof setIsFetching>
     | ReturnType<typeof toggleFollowingProgress>
 
-export const getUsers = (currentPage: number, pageSize: number) => {
-    return async (dispatch: Dispatch) => {
+export const getUsers = (currentPage: number, pageSize: number) => {return async (dispatch: Dispatch) => {
         dispatch(setIsFetching(true))//preloader
         dispatch(setCurrentPage(currentPage))
         let response = await usersAPI.getUsers(currentPage, pageSize)
-        dispatch(setIsFetching(false))//убрать preloader
-        dispatch(setUsers(response.items))
-        dispatch(setTotalUsersCount(response.totalCount));//все пользователи
+       try {
+           dispatch(setIsFetching(false))//убрать preloader
+           dispatch(setUsers(response.items))
+           dispatch(setTotalUsersCount(response.totalCount));//все пользователи
+       }catch (error){
+           handleError(error, dispatch);
+           dispatch(setIsFetching(false))
+       }
     }
 }
 
 const followUnfollowFlow = async (dispatch:Dispatch, userId:number, apiMethod:any, actionCreator:any) => {
     dispatch(toggleFollowingProgress(true, userId))
     let response = await apiMethod(userId)
-    if (response.data.resultCode === 0) {
-        dispatch(actionCreator(userId))
+    try {
+        if (response.data.resultCode === 0) {
+            dispatch(actionCreator(userId))
+        }
+        dispatch(toggleFollowingProgress(false, userId))
+    }catch (error){
+        handleError(error, dispatch);
     }
-    dispatch(toggleFollowingProgress(false, userId))
 }
 
 export const follow = (userId: number) => async (dispatch: Dispatch) => {
